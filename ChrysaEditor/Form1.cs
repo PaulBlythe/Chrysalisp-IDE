@@ -817,7 +817,7 @@ namespace ChrysaEditor
                     try
                     {
                         System.IO.TextWriter writeFile = new StreamWriter(p.FileName);
-                        writeFile.Write(p.TextArea);
+                        writeFile.Write(p.TextArea.Text);
                         writeFile.Flush();
                         writeFile.Close();
                         writeFile = null;
