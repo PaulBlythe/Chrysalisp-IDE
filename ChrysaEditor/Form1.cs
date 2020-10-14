@@ -146,6 +146,7 @@ namespace ChrysaEditor
                     CodePage cp = new CodePage(s, tabControl1.ClientSize);
                     tabControl1.TabPages.Add(cp.hostpage);
                     tabControl1.Refresh();
+                    tabControl1.SelectedTab = cp.hostpage;
 
                     Application.DoEvents();
                 }
