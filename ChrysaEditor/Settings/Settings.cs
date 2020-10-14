@@ -9,7 +9,7 @@ namespace ChrysaEditor.Settings
 {
     public static class Settings
     {
-        public static String HostPath = @"C:\GitHub\ChrysaLisp";
+        public static String HostPath = "";// @"C:\GitHub\ChrysaLisp";
         public static bool Dirty = false;
 
         public static String LispKeywords =
@@ -136,7 +136,7 @@ namespace ChrysaEditor.Settings
         {
             if (Dirty)
             {
-                String location = Path.Combine(Application.ExecutablePath, "settings.bin");
+                String location = Path.Combine(Application.StartupPath, "settings.bin");
                 FileStream writeStream;
                 try
                 {
@@ -154,7 +154,7 @@ namespace ChrysaEditor.Settings
 
         public static void Load()
         {
-            String location = Path.Combine(Application.ExecutablePath, "settings.bin");
+            String location = Path.Combine(Application.StartupPath, "settings.bin");
             if (File.Exists(location))
             {
                 using (BinaryReader b = new BinaryReader(File.Open(location, FileMode.Open)))

@@ -30,7 +30,8 @@ namespace ChrysaEditor
 
             TreeNode root = new TreeNode("Chrysalisp");
             treeView1.Nodes.Add(root);
-            SetupTreeview(Settings.Settings.HostPath, root);
+            if (Settings.Settings.HostPath != "")
+                SetupTreeview(Settings.Settings.HostPath, root);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -118,6 +119,13 @@ namespace ChrysaEditor
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 Settings.Settings.HostPath = fbd.SelectedPath;
+
+                treeView1.Nodes.Clear();
+                TreeNode root = new TreeNode("Chrysalisp");
+                treeView1.Nodes.Add(root);
+                Settings.Settings.Dirty = true;
+
+                SetupTreeview(Settings.Settings.HostPath, root);
             }
         }
 
