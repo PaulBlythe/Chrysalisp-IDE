@@ -607,7 +607,7 @@ namespace ChrysaEditor
 
                         if (addtopupa)
                         {
-                            String pupa = @"C:\GitHub\ChrysaLisp\apps\login\Guest\pupa.inc";
+                            String pupa = Settings.Settings.HostPath + @"\apps\login\Guest\pupa.inc";
                             String fp = File.ReadAllText(pupa);
                             fp = fp.Replace("\"whiteboard\"", "\"whiteboard\" \"" + na.Result + "\"");
                             writeFile = new StreamWriter(pupa);
