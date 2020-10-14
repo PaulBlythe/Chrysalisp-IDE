@@ -77,6 +77,11 @@ namespace ChrysaEditor.Pages
             Dirty = true;
         }
 
+        public void GoTo(int line)
+        {
+            TextArea.Lines[line].Goto();
+            TextArea.FirstVisibleLine = line;
+        }
         private void InitNumberMargin()
         {
 

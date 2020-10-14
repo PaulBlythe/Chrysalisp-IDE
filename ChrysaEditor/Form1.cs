@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using ChrysaEditor.Pages;
 using ChrysaEditor.Forms;
+using ChrysaEditor.Types;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Runtime.InteropServices;
@@ -38,8 +39,6 @@ namespace ChrysaEditor
         {
             this.Close();
         }
-
-        
 
         #region draw mode code
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -70,7 +69,6 @@ namespace ChrysaEditor
         {
 
         }
-
 
         #region Setup
 
@@ -111,7 +109,6 @@ namespace ChrysaEditor
             }
         }
         #endregion
-
 
         private void chrysalispLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -272,6 +269,17 @@ namespace ChrysaEditor
             SendKeys.Send("a");
             SendKeys.Send("k");
             SendKeys.Send("e");
+            SendKeys.Send("\n");
+        }
+        private void SendLisp(Process p)
+        {
+            var pointer = p.MainWindowHandle;
+
+            SetForegroundWindow(pointer);
+            SendKeys.Send("l");
+            SendKeys.Send("i");
+            SendKeys.Send("s");
+            SendKeys.Send("p");
             SendKeys.Send("\n");
         }
         private void SendMakeDocs(Process p)
@@ -814,7 +822,6 @@ namespace ChrysaEditor
 
         #endregion
 
-
         #region Helpers
         void SaveAll()
         {
@@ -840,8 +847,233 @@ namespace ChrysaEditor
         }
 
 
+
         #endregion
 
-       
+        /// <summary>
+        /// Lisp console
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lispConsoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo processInfo;
+            Process process;
+
+            processInfo = new ProcessStartInfo("cmd.exe", "/c " + "run_tui.bat");
+            processInfo.CreateNoWindow = false;
+            processInfo.UseShellExecute = false;
+            processInfo.WorkingDirectory = Settings.Settings.HostPath;
+            processInfo.RedirectStandardError = false;
+            processInfo.RedirectStandardOutput = false;
+            processInfo.RedirectStandardInput = false;
+
+            process = Process.Start(processInfo);
+
+            Thread.Sleep(1000);
+            SendLisp(process);
+
+            process.WaitForExit();
+            process.Close();
+        }
+
+        private void terminalToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            String cmd = Path.Combine(Settings.Settings.HostPath, "run_tui.bat");
+            RunProcessAsync(cmd);
+        }
+
+        List<SearchResultItem> SearchResults;
+        /// <summary>
+        /// Find in files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void findInFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SearchString ss = new SearchString();
+            if (ss.ShowDialog() == DialogResult.OK)
+            {
+                String target = ss.Result;
+                SearchResults = new List<SearchResultItem>();
+
+                Searching search = new Searching();
+                search.Show();
+
+                DirectoryInfo di = new DirectoryInfo(Settings.Settings.HostPath);
+
+                #region Pass 1 : VP files
+                {
+                    FileInfo[] Files = di.GetFiles("*.vp", SearchOption.AllDirectories);
+                    search.InitPass(Files.Length, "VP files");
+                    Application.DoEvents();
+
+                    foreach (FileInfo fi in Files)
+                    {
+                        try
+                        {
+                            string line = null;
+                            System.IO.TextReader readFile = new StreamReader(fi.FullName);
+                            int lineno = 0;
+                            while (true)
+                            {
+                                line = readFile.ReadLine();
+                                if (line != null)
+                                {
+                                    if (line.Contains(target))
+                                    {
+                                        SearchResultItem sri = new SearchResultItem();
+                                        sri.Line = lineno;
+                                        sri.File = fi.FullName;
+                                        sri.Instance = line;
+                                        SearchResults.Add(sri);
+                                        search.AddMatch();
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                lineno++;
+                            }
+                            readFile.Close();
+                            readFile = null;
+                        }
+                        catch (IOException ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                        search.Advance();
+                        Application.DoEvents();
+                    }
+                }
+                #endregion
+
+                #region Pass 2 : Lisp files
+                {
+                    FileInfo[] Files = di.GetFiles("*.lisp", SearchOption.AllDirectories);
+                    search.InitPass(Files.Length, "LISP files");
+                    Application.DoEvents();
+
+                    foreach (FileInfo fi in Files)
+                    {
+                        try
+                        {
+                            string line = null;
+                            System.IO.TextReader readFile = new StreamReader(fi.FullName);
+                            int lineno = 0;
+                            while (true)
+                            {
+                                line = readFile.ReadLine();
+                                if (line != null)
+                                {
+                                    if (line.Contains(target))
+                                    {
+                                        SearchResultItem sri = new SearchResultItem();
+                                        sri.Line = lineno;
+                                        sri.File = fi.FullName;
+                                        sri.Instance = line;
+                                        SearchResults.Add(sri);
+                                        search.AddMatch();
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                lineno++;
+                            }
+                            readFile.Close();
+                            readFile = null;
+                        }
+                        catch (IOException ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                        search.Advance();
+                        Application.DoEvents();
+                    }
+                }
+                #endregion
+
+                #region Pass 3 : include files
+                {
+                    FileInfo[] Files = di.GetFiles("*.inc", SearchOption.AllDirectories);
+                    search.InitPass(Files.Length, "Include files");
+                    Application.DoEvents();
+
+                    foreach (FileInfo fi in Files)
+                    {
+                        try
+                        {
+                            string line = null;
+                            System.IO.TextReader readFile = new StreamReader(fi.FullName);
+                            int lineno = 0;
+                            while (true)
+                            {
+                                line = readFile.ReadLine();
+                                if (line != null)
+                                {
+                                    if (line.Contains(target))
+                                    {
+                                        SearchResultItem sri = new SearchResultItem();
+                                        sri.Line = lineno;
+                                        sri.File = fi.FullName;
+                                        sri.Instance = line;
+                                        SearchResults.Add(sri);
+                                        search.AddMatch();
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                lineno++;
+                            }
+                            readFile.Close();
+                            readFile = null;
+                        }
+                        catch (IOException ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                        search.Advance();
+                        Application.DoEvents();
+                    }
+                }
+                #endregion
+
+                search.Close();
+
+                TabPage rdisplay = new TabPage("Search results");
+                ListBox rlist = new ListBox();
+                rlist.Dock = DockStyle.Fill;
+                rlist.DoubleClick += Rlist_DoubleClick;
+                rdisplay.Controls.Add(rlist);
+
+                foreach (SearchResultItem sri in SearchResults)
+                {
+                    rlist.Items.Add(sri.Result());
+                }
+
+                tabControl1.TabPages.Add(rdisplay);
+                tabControl1.SelectedTab = rdisplay;
+            }
+        }
+
+        private void Rlist_DoubleClick(object sender, EventArgs e)
+        {
+            ListBox l = (ListBox)sender;
+            int index = l.SelectedIndex;
+            CodePage cp =  new CodePage(SearchResults[index].File, tabControl1.ClientSize);
+            cp.GoTo(SearchResults[index].Line);
+
+            tabControl1.TabPages.Add(cp.hostpage);
+            tabControl1.Refresh();
+            tabControl1.SelectedTab = cp.hostpage;
+
+            Application.DoEvents();
+        }
     }
 }
