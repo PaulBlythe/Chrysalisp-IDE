@@ -822,19 +822,22 @@ namespace ChrysaEditor
             foreach (TabPage page in tabControl1.TabPages )
             {
                 Page p = (Page)page.Tag;
-                if (p.Dirty)
+                if (p != null)
                 {
-                    try
+                    if (p.Dirty)
                     {
-                        System.IO.TextWriter writeFile = new StreamWriter(p.FileName);
-                        writeFile.Write(p.TextArea.Text);
-                        writeFile.Flush();
-                        writeFile.Close();
-                        writeFile = null;
-                    }
-                    catch (IOException ex)
-                    {
-                        MessageBox.Show(ex.ToString());
+                        try
+                        {
+                            System.IO.TextWriter writeFile = new StreamWriter(p.FileName);
+                            writeFile.Write(p.TextArea.Text);
+                            writeFile.Flush();
+                            writeFile.Close();
+                            writeFile = null;
+                        }
+                        catch (IOException ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
                     }
                 }
             }
