@@ -97,6 +97,7 @@ namespace ChrysaEditor
                     case ".inc":
                     case ".vp":
                     case ".lisp":
+                    case ".md":
                         {
                             TreeNode t = new TreeNode(fi.Name);
                             t.Tag = fi.FullName;
@@ -542,7 +543,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs\CLASSES.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -556,7 +557,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs\ASSIGNMENT.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -842,8 +843,6 @@ namespace ChrysaEditor
                 }
             }
         }
-
-
 
         #endregion
 
