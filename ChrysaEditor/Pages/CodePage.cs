@@ -11,11 +11,8 @@ using ScintillaNET;
 namespace ChrysaEditor.Pages
 {
     public class CodePage:Page
-    {
-       
+    {    
         public TabPage hostpage;
-        
-
 
         public CodePage(string name, Size clientSize)
         {
@@ -57,6 +54,7 @@ namespace ChrysaEditor.Pages
             TextArea.SetKeywords(0, Settings.Settings.LispKeywords);
             TextArea.SetKeywords(1, Settings.Settings.LispFunctions);
             TextArea.SetKeywords(2, Settings.Settings.Symbols);
+            TextArea.SetKeywords(3, Settings.Settings.LispMacros);
 
             String path = Path.Combine(Settings.Settings.HostPath, name);
             string text = System.IO.File.ReadAllText(path);
@@ -66,7 +64,6 @@ namespace ChrysaEditor.Pages
 
             InitNumberMargin();
             InitBookmarkMargin();
-
             InitCodeFolding();
 
             hostpage.Controls.Add(TextArea);

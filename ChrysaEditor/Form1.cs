@@ -195,7 +195,6 @@ namespace ChrysaEditor
             processInfo.CreateNoWindow = false;
             processInfo.UseShellExecute = false;
             processInfo.WorkingDirectory = Settings.Settings.HostPath;
-            // *** Redirect the output ***
             processInfo.RedirectStandardError = false;
             processInfo.RedirectStandardOutput = false;
 
@@ -394,7 +393,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/COMMANDS.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -403,7 +402,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/COMMS.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -412,7 +411,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"README.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -421,7 +420,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/DIARY.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -430,7 +429,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/ENVIRONMENT.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -439,7 +438,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/FUNCTIONS.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -448,7 +447,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/INTRO.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -457,7 +456,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/ITERATION.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -466,7 +465,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/LISP.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -475,7 +474,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/STRUCTURE.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -484,7 +483,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/SYNTAX.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -493,7 +492,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/TAOS.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -502,7 +501,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/TERMINAL.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -511,7 +510,7 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/VM.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
@@ -520,22 +519,17 @@ namespace ChrysaEditor
             HelpPage hp = new HelpPage(@"docs/TODO.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
 
-        private void runToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            String cmd = Path.Combine(Settings.Settings.HostPath, "run.bat");
-            ExecuteCommand(cmd);
-        }
 
         private void lispToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HelpPage hp = new HelpPage("STATUS.md", tabControl1.ClientSize);
             tabControl1.TabPages.Add(hp.hostpage);
             tabControl1.Refresh();
-
+            tabControl1.SelectedTab = hp.hostpage;
             Application.DoEvents();
         }
         /// <summary>
@@ -1046,7 +1040,7 @@ namespace ChrysaEditor
 
                 search.Close();
 
-                TabPage rdisplay = new TabPage("Search results");
+                TabPage rdisplay = new TabPage("Search results    x");
                 ListBox rlist = new ListBox();
                 rlist.Dock = DockStyle.Fill;
                 rlist.DoubleClick += Rlist_DoubleClick;
@@ -1062,6 +1056,11 @@ namespace ChrysaEditor
             }
         }
 
+        /// <summary>
+        /// Double click on search result display
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Rlist_DoubleClick(object sender, EventArgs e)
         {
             ListBox l = (ListBox)sender;
@@ -1069,11 +1068,18 @@ namespace ChrysaEditor
             CodePage cp =  new CodePage(SearchResults[index].File, tabControl1.ClientSize);
             cp.GoTo(SearchResults[index].Line);
 
-            tabControl1.TabPages.Add(cp.hostpage);
+            tabControl1.TabPages.Add(cp.hostpage.Name);
             tabControl1.Refresh();
             tabControl1.SelectedTab = cp.hostpage;
 
             Application.DoEvents();
+        }
+
+
+        private void runToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            String cmd = Path.Combine(Settings.Settings.HostPath, "run.bat");
+            ExecuteCommand(cmd);
         }
     }
 }
