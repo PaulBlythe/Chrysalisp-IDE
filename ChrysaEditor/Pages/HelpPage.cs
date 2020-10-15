@@ -55,6 +55,8 @@ namespace ChrysaEditor.Pages
             string text = System.IO.File.ReadAllText(FileName);
             TextArea.Text = text;
 
+            
+
             InitNumberMargin();
             InitBookmarkMargin();
 
