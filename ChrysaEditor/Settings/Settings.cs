@@ -13,56 +13,14 @@ namespace ChrysaEditor.Settings
         public static bool Dirty = false;
 
         public static String LispKeywords =
-         "abort :from-end :overwrite :adjustable :gensym :predicate :append :host " +
-		":preserve-whitespace :array :if-does-not-exist :pretty :base :if-exists :print " +
-		":case :include :print-function :circle :index :probe :conc-name :inherited " +
-		":radix :constructor :initial-contents :read-only :copier :initial-element " +
-		":rehash-size :count :initial-offset :rehash-threshold :create :initial-value " +
-		":rename :default :input :rename-and-delete :defaults :internal :size :device " +
-		":io :start :direction :junk-allowed :start1 :directory :key :start2 " +
-		":displaced-index-offset :length :stream :displaced-to :level :supersede " +
-		":element-type :name :test :end :named :test-not :end1 :new-version :type :end2 " +
-		":nicknames :use :error :output :verbose :escape :output-file :version " +
-		":external :documentation :shadowing-import-from :modern :export " +
-		":case-sensitive :case-inverted :shadow :import-from :intern :fill-pointer " +
-		":upcase :downcase :preserve :invert :load-toplevel :compile-toplevel :execute " +
-		":while :until :for :do :if :then :else :when :unless :in :across :finally " +
-		":collect :nconc :maximize :minimize :sum :and :with :initially :append :into " +
-		":count :end :repeat :always :never :thereis :from :to :upto :downto :below " +
-		":above :by :on :being :each :the :hash-key :hash-keys :hash-value :hash-values " +
-		":using :of-type :upfrom :downfrom :arguments :return-type :library :full " +
-		":malloc-free :none :alloca :in :out :in-out :stdc-stdcall :stdc :c :language " +
-		":built-in :typedef :external :fini :init-once :init-always";
+         "% * + - / /= < << <= = > >= >> >>> abi abs age align apply array ascii-lower ascii-upper base-functions base-macros bind cap cat catch char char-to-num clear cmp code cond copy cpu def defq each! each-line each-mergeable each-mergeable-rev elem elem-set empty? ends-with env eql erase eval even? exec f2i f2r ffi file-stream filter find find-rev first fixeds gensym get get-cstr hash i2f i2r import insert intern intern-seq io-stream join lambda last length list load load-stream log2 logand logior lognot logxor macro macroexpand map map-rev match? max merge-obj min neg neg? nempty? nil? nlo nlz nto ntz num-to-char num-to-utf8 nums odd? pad partition penv pop pos? pow prebind prin print progn push quasi-quote quote r2f r2i random range read read-avail read-char read-line reals reduce reduce-rev reduced-reduce reduced-reduce-rev repl rest reverse save second set setq shuffle shuffled slice some! sort sorted split starts-with str str-to-num string-stream swap sym throw time to-lower to-upper tolist trim trim-end trim-start type-of type-to-size undef unzip while within-compile-env write write-char write-line zip";
 
         public static String LispFunctions =
-        "defun defun-bind def-func-end defmacro defcvar import defq defmacro-bind defmacro import cond structure ui-window window byte " +
+        "defun mail-send ui-label defun-bind def-func-end defmacro defcvar import defq defmacro-bind defmacro import cond structure ui-window window byte " +
         "def-struct def-struct-end def-func ffi each while not and or reduce setq when ui-title-bar bind gui-add view-hide view-event view-change-dirty ui-grid";
 
         public static String LispMacros =
-        "rest zip empty? nempty? structure struct offset ptr long int short byte path write-short write-long write-line write-int write-char write" +
-        " within-compile-env while empty? nempty? first second last when view-sub-opaque view-sub view-set-size view-fit view-set-pos view-set-flags" +
-        " gui-info view-locate nil? aeach view-set-bounds view-pref-size view-layout view-hide view-get-size view-get-pos view-get-bounds view-find-id" +
-        " view-event view-dirty-all view-dirty view-change-dirty view-change view-add-opaque view-add-front view-add-dirty view-add-child view-add-back" +
-        " vdu-max-size vdu-load vdu-char-size unzip until unless undef ui-window ui-view ui-vdu ui-tree ui-tool-bar ui-title-bar ui-title ui-textfield" +
-        " ui-slider ui-scroll ui-props ui-progress ui-merge-props ui-label ui-grid ui-flow ui-element hash ui-canvas ui-buttons ui-button ui-backdrop" +
-        " type-to-size type-of tuple-set tuple-get trim-start trim-end trim to-upper to-lower times time throw task-sleep task-mailbox sym? seq? sym" +
-        " swap string-stream intern-seq intern io-stream load-stream stream-flush stream-avail str? str-to-num str stdio-get-args starts-with sqrt split" +
-        " sorted sort some! some slice sin sign shuffled shuffle setq setd set-field set save repl reduced-reduce reduced-reduce-rev reduced reduce-rev" +
-        " reduce recip reals read-short read-long read-line read-int read-char read-avail read rcurry range random r2i r2f quote quasi-quote push progn" +
-        " print prin pop pii-write-char pii-read-char pii-dirlist penv path-transform path-stroke-polylines path-stroke-polygons path-simplify" +
-        " path-gen-quadratic path-gen-cubic path-gen-arc path-filter partition pad out-stream or opt open-remote open-pipe open-farm open-child nums-sum" +
-        " nums-sub nums-scale nums-mul nums-mod nums-frac nums-floor nums-div nums-add nums-abs nums num? num-to-char ntz nto notevery notany not nlz nlo" +
-        " neg min merge-obj mem-stats max match? map-rev map mail-send mail-select mail-read mail-poll mail-free-mbox mail-enquire mail-forget mail-declare" +
-        " mail-alloc-mbox macroexpand lst? logxor lognot logior logand log2 load list let length lambda macro unquote-splicing num-to-utf8 unquote mail-devices" +
-        " join debug-fun? debug-send insert inc in-stream in-set-state in-next-msg in-mbox in-get-state import if i2r i2f gui-add-back gui-add get-ushort" +
-        " get-uint get-ubyte get-short get-long get-int get-field get-cstr get-byte get gensym frac font-glyph-ranges font-glyph-paths fnc? floor fixeds" +
-        " find-rev find filter file-stream ffi f2r f2i exec every eval erase eql env ends-with elem-set elem each! each-rev each-mergeable-rev each-mergeable" +
-        " each-line each defun-debug defun-bind defun defq defmacro-bind defmacro def dec debug-fun debug-format debug curry create-window create-view" +
-        " create-vdu create-title create-textfield create-stdio create-slider create-scroll create-progress create-label create-grid create-font create-flow" +
-        " create-canvas create-button create-backdrop cpu cos copy const cond compose component-get-id component-connect code cmp clear char-to-num char catch" +
-        " cat case cap canvas-swap canvas-set-flags canvas-set-color canvas-save canvas-resize canvas-plot canvas-next-frame seq? canvas-load canvas-info" +
-        " canvas-fpoly canvas-fill reverse canvas-fbox prebind bind awhile awhen ascii-upper ascii-lower ascii-code ascii-char tolist array apply and align" +
-        " aif age acond abs abi aand >>> >> >= > = <= << < + % /= / * -";
+        "# and ascii-char ascii-code case compose const curry dec defmacro defmacro-bind defun defun-bind each each-rev env? every fnc? get-byte get-int get-long get-short get-ubyte get-uint get-ushort if inc let lst? not notany notevery num? opt or rcurry read-int read-long read-short reduced seq? setd some str? sym? times unless until when write-int write-long write-short";
 
         public static String Symbols =
             " argb_black " +

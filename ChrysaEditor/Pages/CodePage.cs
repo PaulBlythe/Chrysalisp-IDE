@@ -51,10 +51,11 @@ namespace ChrysaEditor.Pages
 
             TextArea.Lexer = Lexer.Lisp;
 
-            TextArea.SetKeywords(0, Settings.Settings.LispKeywords);
+            TextArea.SetKeywords(3, Settings.Settings.LispKeywords);
             TextArea.SetKeywords(1, Settings.Settings.LispFunctions);
             TextArea.SetKeywords(2, Settings.Settings.Symbols);
-            TextArea.SetKeywords(3, Settings.Settings.LispMacros);
+            TextArea.SetKeywords(0, Settings.Settings.LispMacros);
+            
 
             String path = Path.Combine(Settings.Settings.HostPath, name);
             string text = System.IO.File.ReadAllText(path);

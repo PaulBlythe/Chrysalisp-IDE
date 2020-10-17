@@ -1044,6 +1044,7 @@ namespace ChrysaEditor
 
                 TabPage rdisplay = new TabPage("Search results    x");
                 ListBox rlist = new ListBox();
+                rlist.Font = new Font("Consolas", 10, FontStyle.Regular);
                 rlist.Dock = DockStyle.Fill;
                 rlist.DoubleClick += Rlist_DoubleClick;
                 rdisplay.Controls.Add(rlist);
