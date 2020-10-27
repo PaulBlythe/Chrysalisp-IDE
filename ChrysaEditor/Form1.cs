@@ -74,7 +74,7 @@ namespace ChrysaEditor
                         if (p is CodePage)
                         {
                             CodePage p2 = (CodePage)p;
-                            
+
                             p2.menu.Show(e.Location);
                             Application.DoEvents();
                         }
@@ -90,18 +90,34 @@ namespace ChrysaEditor
 
         #region Setup
 
-        
+
         void SetupTreeview(String d, TreeNode node)
         {
+
+
             DirectoryInfo files = new DirectoryInfo(d);
             var dirs = files.EnumerateDirectories();
-            foreach(DirectoryInfo f in dirs)
+            foreach (DirectoryInfo f in dirs)
             {
                 if (f.Name != ".git")
                 {
+                    ContextMenuStrip docMenu = new ContextMenuStrip();
+                    ToolStripMenuItem openLabel = new ToolStripMenuItem();
+                    openLabel.Text = "Open in explorer";
+                    openLabel.Click += OpenLabel_Click;
+                    openLabel.Tag = f.FullName;
+                    docMenu.Items.Add(openLabel);
+
+                    ToolStripMenuItem NewDirLabel = new ToolStripMenuItem();
+                    NewDirLabel.Text = "New folder";
+                    NewDirLabel.Click += NewDirLabel_Click;
+                    NewDirLabel.Tag = f.FullName;
+                    docMenu.Items.Add(NewDirLabel);
+
                     TreeNode t = new TreeNode(f.Name);
                     t.Tag = null;
                     t.Name = f.Name;
+                    t.ContextMenuStrip = docMenu;
                     node.Nodes.Add(t);
 
                     SetupTreeview(f.FullName, t);
@@ -124,8 +140,25 @@ namespace ChrysaEditor
                         break;
 
                 }
-                
+
             }
+        }
+
+        private void NewDirLabel_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem t = (ToolStripMenuItem)sender;
+        }
+
+        private void OpenLabel_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem t = (ToolStripMenuItem)sender;
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = (String)t.Tag,
+                UseShellExecute = true,
+                Verb = "open"
+            });
         }
         #endregion
 
@@ -153,7 +186,7 @@ namespace ChrysaEditor
         private void treeView1_DoubleClick(object sender, EventArgs e)
         {
             TreeNode t = treeView1.SelectedNode;
-            if (t!=null)
+            if (t != null)
             {
                 if (t.Tag != null)
                 {
@@ -220,7 +253,7 @@ namespace ChrysaEditor
             process = Process.Start(processInfo);
             process.WaitForExit();
 
-           
+
             process.Close();
         }
 
@@ -251,6 +284,13 @@ namespace ChrysaEditor
             return tcs.Task;
         }
 
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool MoveWindow(IntPtr hwnd, int x, int y, int cx, int cy, bool repaint);
+
+
         /// <summary>
         /// Run terminal
         /// </summary>
@@ -259,7 +299,31 @@ namespace ChrysaEditor
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             String cmd = Path.Combine(Settings.Settings.HostPath, "run_tui.bat");
-            RunProcessAsync(cmd);
+
+            TabPage tp = new TabPage();
+            tp.Text = "tui   x";
+            tabControl1.TabPages.Add(tp);
+            tabControl1.Refresh();
+            tabControl1.SelectedTab = tp;
+
+            var tcs = new TaskCompletionSource<int>();
+
+            var process = new Process
+            {
+                StartInfo = { FileName = "cmd.exe", Arguments = "/c " + cmd, WorkingDirectory = Settings.Settings.HostPath },
+                EnableRaisingEvents = true
+            };
+
+            process.Exited += (tsender, args) =>
+            {
+                tcs.SetResult(process.ExitCode);
+                process.Dispose();
+            };
+
+            process.Start();
+            Thread.Sleep(500);
+            SetParent(process.MainWindowHandle, tp.Handle);
+            MoveWindow(process.MainWindowHandle, 0, 0, tp.Width, tp.Height, true);
         }
 
         #region Keyboard faking
@@ -318,7 +382,7 @@ namespace ChrysaEditor
         }
         private void SendMakeBoot(Process p)
         {
-             var pointer = p.MainWindowHandle;
+            var pointer = p.MainWindowHandle;
 
             SetForegroundWindow(pointer);
             SendKeys.Send("m");
@@ -614,7 +678,7 @@ namespace ChrysaEditor
                     {
                         Directory.CreateDirectory(dir);
                     }
-                    
+
                     try
                     {
                         System.IO.TextWriter writeFile = new StreamWriter(file);
@@ -838,7 +902,7 @@ namespace ChrysaEditor
         #region Helpers
         void SaveAll()
         {
-            foreach (TabPage page in tabControl1.TabPages )
+            foreach (TabPage page in tabControl1.TabPages)
             {
                 Page p = (Page)page.Tag;
                 if (p != null)
@@ -872,24 +936,33 @@ namespace ChrysaEditor
         /// <param name="e"></param>
         private void lispConsoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessStartInfo processInfo;
-            Process process;
+            String cmd = Path.Combine(Settings.Settings.HostPath, "run_tui.bat");
 
-            processInfo = new ProcessStartInfo("cmd.exe", "/c " + "run_tui.bat");
-            processInfo.CreateNoWindow = false;
-            processInfo.UseShellExecute = false;
-            processInfo.WorkingDirectory = Settings.Settings.HostPath;
-            processInfo.RedirectStandardError = false;
-            processInfo.RedirectStandardOutput = false;
-            processInfo.RedirectStandardInput = false;
+            TabPage tp = new TabPage();
+            tp.Text = "tui   x";
+            tabControl1.TabPages.Add(tp);
+            tabControl1.Refresh();
+            tabControl1.SelectedTab = tp;
 
-            process = Process.Start(processInfo);
+            var tcs = new TaskCompletionSource<int>();
 
-            Thread.Sleep(1000);
-            SendLisp(process);
+            var process = new Process
+            {
+                StartInfo = { FileName = "cmd.exe", Arguments = "/c " + cmd, WorkingDirectory = Settings.Settings.HostPath },
+                EnableRaisingEvents = true
+            };
 
-            process.WaitForExit();
-            process.Close();
+            process.Exited += (tsender, args) =>
+            {
+                tcs.SetResult(process.ExitCode);
+                process.Dispose();
+            };
+
+            process.Start();
+            Thread.Sleep(500);
+            SetParent(process.MainWindowHandle, tp.Handle);
+            MoveWindow(process.MainWindowHandle, 0, 0, tp.Width, tp.Height, true);
+            SendLisp(process);  
         }
 
         private void terminalToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -1068,14 +1141,14 @@ namespace ChrysaEditor
 
                 search.Close();
 
-                SearchResultsPage srp = new SearchResultsPage(target,SearchResults);
+                SearchResultsPage srp = new SearchResultsPage(target, SearchResults);
 
                 tabControl1.TabPages.Add(srp.hostpage);
                 tabControl1.SelectedTab = srp.hostpage;
             }
         }
 
-        
+
 
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {
