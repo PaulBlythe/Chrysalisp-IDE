@@ -56,13 +56,29 @@ namespace ChrysaEditor
             for (int i = 0; i < this.tabControl1.TabPages.Count; i++)
             {
                 Rectangle r = tabControl1.GetTabRect(i);
-                //Getting the position of the "x" mark.
-                Rectangle closeButton = new Rectangle(r.Right - 19, r.Top + 3, 12, 12);
-                if (closeButton.Contains(e.Location))
+
+                if (e.Button == MouseButtons.Left)
                 {
-
-                    this.tabControl1.TabPages.RemoveAt(i);
-
+                    //Getting the position of the "x" mark.
+                    Rectangle closeButton = new Rectangle(r.Right - 19, r.Top + 3, 12, 12);
+                    if (closeButton.Contains(e.Location))
+                    {
+                        this.tabControl1.TabPages.RemoveAt(i);
+                    }
+                }
+                if (e.Button == MouseButtons.Right)
+                {
+                    if (r.Contains(e.Location))
+                    {
+                        Page p = tabControl1.TabPages[i].Tag as Page;
+                        if (p is CodePage)
+                        {
+                            CodePage p2 = (CodePage)p;
+                            
+                            p2.menu.Show(e.Location);
+                            Application.DoEvents();
+                        }
+                    }
                 }
             }
         }
@@ -1054,25 +1070,7 @@ namespace ChrysaEditor
             }
         }
 
-        /// <summary>
-        /// Double click on search result display
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Rlist_DoubleClick(object sender, EventArgs e)
-        {
-            ListBox l = (ListBox)sender;
-            int index = l.SelectedIndex;
-            CodePage cp =  new CodePage(SearchResults[index].File, tabControl1.ClientSize);
-            cp.GoTo(SearchResults[index].Line);
-
-            tabControl1.TabPages.Add(cp.hostpage);
-            tabControl1.Refresh();
-            tabControl1.SelectedTab = cp.hostpage;
-
-            Application.DoEvents();
-        }
-
+        
 
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -11,9 +11,8 @@ using ScintillaNET;
 namespace ChrysaEditor.Pages
 {
     public class CodePage:Page
-    {    
-        
-
+    {
+        public ContextMenuStrip menu;
         public CodePage(string name, Size clientSize)
         {
             FileName = name;
@@ -60,7 +59,6 @@ namespace ChrysaEditor.Pages
             String path = Path.Combine(Settings.Settings.HostPath, name);
             string text = System.IO.File.ReadAllText(path);
             TextArea.Text = text;
-
             TextArea.CaretForeColor = IntToColor(0xffffff);
 
             InitNumberMargin();
@@ -68,7 +66,11 @@ namespace ChrysaEditor.Pages
             InitCodeFolding();
 
             hostpage.Controls.Add(TextArea);
+
+            menu = new ContextMenuStrip();
+            menu.Items.Add(name);
         }
+
 
         private void OnTextChanged(object sender, EventArgs e)
         {

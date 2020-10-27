@@ -12,8 +12,8 @@ namespace ChrysaEditor.Pages
 {
     public class SearchResultsPage: Page
     {
-        public TabPage hostpage;
         SearchResultItem[] Results;
+        
 
         public SearchResultsPage(String name, List<SearchResultItem> SearchResults)
         {
@@ -21,7 +21,9 @@ namespace ChrysaEditor.Pages
 
             hostpage = new TabPage("Search '"+name+"'  x");
             ListBox rlist = new ListBox();
-            rlist.Font = new Font("Consolas", 10, FontStyle.Regular);
+            rlist.Font = new Font("Consolas", 12, FontStyle.Regular);
+            rlist.ForeColor = Color.Green;
+            rlist.BackColor = Color.Black;
             rlist.Dock = DockStyle.Fill;
             rlist.DoubleClick += Rlist_DoubleClick;
             hostpage.Controls.Add(rlist);
@@ -30,7 +32,10 @@ namespace ChrysaEditor.Pages
             {
                 rlist.Items.Add(sri.Result());
             }
+           
         }
+
+        
 
         private void Rlist_DoubleClick(object sender, EventArgs e)
         {
