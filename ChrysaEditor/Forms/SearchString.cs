@@ -14,9 +14,13 @@ namespace ChrysaEditor.Forms
     {
         public String Result;
 
-        public SearchString()
+        public SearchString(String s)
         {
             InitializeComponent();
+            if (s!=null)
+            {
+                textBox1.Text = s;
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

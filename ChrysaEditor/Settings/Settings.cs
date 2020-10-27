@@ -17,7 +17,7 @@ namespace ChrysaEditor.Settings
 
         public static String LispFunctions =
         "defun mail-send ui-label defun-bind def-func-end defmacro defcvar import defq defmacro-bind defmacro import cond structure ui-window window byte " +
-        "def-struct def-struct-end def-func ffi each while not and or reduce setq when ui-title-bar bind gui-add view-hide view-event view-change-dirty ui-grid";
+        "def-struct def-method def-struct-end def-func ffi each while not and or reduce setq when ui-title-bar bind gui-add view-hide view-event view-change-dirty ui-grid";
 
         public static String LispMacros =
         "# and ascii-char ascii-code case compose const curry dec defmacro defmacro-bind defun defun-bind each each-rev env? every fnc? get-byte get-int get-long get-short get-ubyte get-uint get-ushort if inc let lst? not notany notevery num? opt or rcurry read-int read-long read-short reduced seq? setd some str? sym? times unless until when write-int write-long write-short";

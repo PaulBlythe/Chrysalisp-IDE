@@ -13,7 +13,7 @@ namespace ChrysaEditor.Pages
 {
     public class HelpPage : Page
     {
-        public TabPage hostpage;
+       
 
         public HelpPage(string name, Size clientSize)
         {

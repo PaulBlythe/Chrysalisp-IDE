@@ -19,12 +19,14 @@ namespace ChrysaEditor
 {
     public partial class Form1 : Form
     {
+        public static Form1 Instance;
 
         [DllImport("User32.dll")]
         static extern int SetForegroundWindow(IntPtr point);
 
         public Form1()
         {
+            Instance = this;
             InitializeComponent();
 
             Settings.Settings.Load();
@@ -300,7 +302,7 @@ namespace ChrysaEditor
         }
         private void SendMakeBoot(Process p)
         {
-            var pointer = p.MainWindowHandle;
+             var pointer = p.MainWindowHandle;
 
             SetForegroundWindow(pointer);
             SendKeys.Send("m");
@@ -888,7 +890,10 @@ namespace ChrysaEditor
         /// <param name="e"></param>
         private void findInFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SearchString ss = new SearchString();
+            Page p = tabControl1.SelectedTab.Tag as Page;
+            String s = p.TextArea.SelectedText;
+
+            SearchString ss = new SearchString(s);
             if (ss.ShowDialog() == DialogResult.OK)
             {
                 String target = ss.Result;
@@ -1042,20 +1047,10 @@ namespace ChrysaEditor
 
                 search.Close();
 
-                TabPage rdisplay = new TabPage("Search results    x");
-                ListBox rlist = new ListBox();
-                rlist.Font = new Font("Consolas", 10, FontStyle.Regular);
-                rlist.Dock = DockStyle.Fill;
-                rlist.DoubleClick += Rlist_DoubleClick;
-                rdisplay.Controls.Add(rlist);
+                SearchResultsPage srp = new SearchResultsPage(target,SearchResults);
 
-                foreach (SearchResultItem sri in SearchResults)
-                {
-                    rlist.Items.Add(sri.Result());
-                }
-
-                tabControl1.TabPages.Add(rdisplay);
-                tabControl1.SelectedTab = rdisplay;
+                tabControl1.TabPages.Add(srp.hostpage);
+                tabControl1.SelectedTab = srp.hostpage;
             }
         }
 
@@ -1083,6 +1078,13 @@ namespace ChrysaEditor
         {
             String cmd = Path.Combine(Settings.Settings.HostPath, "run.bat");
             ExecuteCommand(cmd);
+        }
+
+        public void AddPage(Page page)
+        {
+            tabControl1.TabPages.Add(page.hostpage);
+            tabControl1.Refresh();
+            tabControl1.SelectedTab = page.hostpage;
         }
     }
 }

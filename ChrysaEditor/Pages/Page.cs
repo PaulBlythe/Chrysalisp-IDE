@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ScintillaNET;
 
 namespace ChrysaEditor.Pages
@@ -19,6 +20,7 @@ namespace ChrysaEditor.Pages
 		public const bool CODEFOLDING_CIRCULAR = true;
         public const int BACK_COLOR = 0;
         public const int FORE_COLOR = 0xFFFFFF;
+        public TabPage hostpage;
 
         public static Color IntToColor(int rgb)
         {
