@@ -906,8 +906,13 @@ namespace ChrysaEditor
         /// <param name="e"></param>
         private void findInFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Page p = tabControl1.SelectedTab.Tag as Page;
-            String s = p.TextArea.SelectedText;
+            String s = "";
+
+            if (tabControl1.SelectedTab != null)
+            {
+                Page p = tabControl1.SelectedTab.Tag as Page;
+                s = p.TextArea.SelectedText;
+            }
 
             SearchString ss = new SearchString(s);
             if (ss.ShowDialog() == DialogResult.OK)
