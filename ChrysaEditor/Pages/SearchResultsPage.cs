@@ -22,7 +22,7 @@ namespace ChrysaEditor.Pages
             hostpage = new TabPage("Search '"+name+"'  x");
             ListBox rlist = new ListBox();
             rlist.Font = new Font("Consolas", 12, FontStyle.Regular);
-            rlist.ForeColor = Color.Green;
+            rlist.ForeColor = Color.LightGreen;
             rlist.BackColor = Color.Black;
             rlist.Dock = DockStyle.Fill;
             rlist.DoubleClick += Rlist_DoubleClick;
